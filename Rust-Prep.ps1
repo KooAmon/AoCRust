@@ -110,12 +110,11 @@ function New-DayInput {
 
     Write-Host "Day $day input: Creating at $dayInputPath" -NoNewline
 
+    $sessionString = Get-Content -Path (Join-Path $PSScriptRoot "session.txt")
+
     $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
     $session.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0"
-    $session.Cookies.Add((New-Object System.Net.Cookie("_ga", "GA1.2.510995167.1760361029", "/", ".adventofcode.com")))
-    $session.Cookies.Add((New-Object System.Net.Cookie("session", "<Enter Session Cookie Here>", "/", ".adventofcode.com")))
-    $session.Cookies.Add((New-Object System.Net.Cookie("_gid", "GA1.2.1892417073.1761562191", "/", ".adventofcode.com")))
-    $session.Cookies.Add((New-Object System.Net.Cookie("_ga_MHSNPJKWC7", "GS2.2.s1761578276`$o21`$g0`$t1761578276`$j60`$l0`$h0", "/", ".adventofcode.com")))
+    $session.Cookies.Add((New-Object System.Net.Cookie("session", $sessionString, "/", ".adventofcode.com")))
 
     $content = Invoke-WebRequest -UseBasicParsing -Uri "https://adventofcode.com/$year/day/$day/input" `
         -WebSession $session `
