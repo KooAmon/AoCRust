@@ -6,7 +6,7 @@ param (
 
 function Test-Day{
     param (
-        [int] $day
+        [parameter(Mandatory)][int] $day
     )
 
     return ($day -ge 1 -and $day -le 25)
@@ -14,7 +14,7 @@ function Test-Day{
 
 function Test-Year{
     param (
-        [int] $year
+        [parameter(Mandatory)][int] $year
     )
 
     return ($year -ge 2015 -and $year -le (Get-Date).Year)
@@ -22,8 +22,8 @@ function Test-Year{
 
 function Test-Params {
     param (
-        [int] $day,
-        [int] $year
+        [parameter(Mandatory)][int] $day,
+        [parameter(Mandatory)][int] $year
     )
 
     if (!(Test-Day -day $day)) { throw "Day must be between 1 and 25." }
@@ -32,8 +32,8 @@ function Test-Params {
 
 function Update-MainRsDay {
     param (
-        [int] $day,
-        [int] $year
+        [parameter(Mandatory)][int] $day,
+        [parameter(Mandatory)][int] $year
     )
 
     #   Modify main.rs to add new day module
@@ -55,7 +55,7 @@ function Update-MainRsDay {
 
 function New-Year {
     param (
-        [int] $year
+        [parameter(Mandatory)][int] $year
     )
 
     Write-Host "Year $year directory: Creating at $yearPath"
@@ -87,7 +87,7 @@ function New-Year {
 
 function New-Day {
     param (
-        [int] $day
+        [parameter(Mandatory)][int] $day
     )
 
     Write-Host "Day $day file: Creating at $dayPath" -NoNewline
@@ -104,7 +104,8 @@ function New-Day {
 
 function New-DayInput {
     param (
-        [int] $day
+        [parameter(Mandatory)][int] $day,
+        [parameter(Mandatory)][int] $year
     )
 
     Write-Host "Day $day input: Creating at $dayInputPath" -NoNewline
@@ -112,16 +113,16 @@ function New-DayInput {
     $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
     $session.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0"
     $session.Cookies.Add((New-Object System.Net.Cookie("_ga", "GA1.2.510995167.1760361029", "/", ".adventofcode.com")))
-    $session.Cookies.Add((New-Object System.Net.Cookie("session", "53616c7465645f5f7ee4e4882898885983f7147ce80bb52080d6c5181f4ada8b26505c92fdcc32becfa0bb3c6641a63abf58301535fc48e8370f6a2d1195eacc", "/", ".adventofcode.com")))
+    $session.Cookies.Add((New-Object System.Net.Cookie("session", "<Enter Session Cookie Here>", "/", ".adventofcode.com")))
     $session.Cookies.Add((New-Object System.Net.Cookie("_gid", "GA1.2.1892417073.1761562191", "/", ".adventofcode.com")))
     $session.Cookies.Add((New-Object System.Net.Cookie("_ga_MHSNPJKWC7", "GS2.2.s1761578276`$o21`$g0`$t1761578276`$j60`$l0`$h0", "/", ".adventofcode.com")))
 
-    $content = Invoke-WebRequest -UseBasicParsing -Uri "https://adventofcode.com/2015/day/$day/input" `
+    $content = Invoke-WebRequest -UseBasicParsing -Uri "https://adventofcode.com/$year/day/$day/input" `
         -WebSession $session `
         -Headers @{
             "authority"="adventofcode.com"
             "method"="GET"
-            "path"="/2015/day/$day/input"
+            "path"="/$year/day/$day/input"
             "scheme"="https"
             "accept"="text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
             "accept-encoding"="gzip, deflate, br, zstd"
@@ -161,5 +162,5 @@ if (!(Test-Path $yearPath)) { New-Year -year $year }
 else                        { Write-Host "Year $year directory: Already exists at $yearPath" }
 if (!(Test-Path $dayPath)) { New-Day -day $day }
 else                       { Write-Host "Day $day file: Already exists at $dayPath" }
-if (!(Test-Path $dayInputPath)) { New-DayInput -day $day }
+if (!(Test-Path $dayInputPath)) { New-DayInput -day $day -year $year }
 else                            { Write-Host "Day $day input: Already exists at $dayInputPath" }
