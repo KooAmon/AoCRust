@@ -1,0 +1,12 @@
+[package]
+name = "rustaocXXXyearXXX"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+#   for async runtime
+tokio = { version = "1", features = ["full"] }
+#   for command line argument parsing
+clap = { version = "4", features = ["derive"] }
+#   for regular expressions
+fancy-regex = "0.16.2"
