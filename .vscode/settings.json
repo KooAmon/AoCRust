@@ -1,0 +1,7 @@
+{
+    "github.copilot.nextEditSuggestions.fixes": false,
+    "github.copilot.renameSuggestions.triggerAutomatically": false,
+    "github.copilot.enable": {
+        "rust": false
+    }
+}
