@@ -4,6 +4,9 @@
 
 When using this codebase, you can run individual days of the Advent of Code challenges implemented in Rust. Each day is organized into its own module, and you can easily add more days or create a new Year.
 
+## Config
+Invoke-WebRequest needs a session cookie to successfully authenticate and pull input from AoC. Log into AoC from your browser, open DevTools (F12), go to the network tab and refresh the page. Under the request headers for the current year, look for "session=..." Copy the string after "=" into session.txt then run Rust-Prep.ps1 as shown below.
+
 ### How to Add a New Year
 
 1. Open PowerShell to the root directory (same directory as this file)
