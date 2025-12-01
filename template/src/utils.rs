@@ -35,13 +35,14 @@ impl Args {
 
 
 pub fn load_input(day: u8) -> String {
-    let filename = format!(r"E:\repos\Random Code\AdventOfCode\rustaocXXXyearXXX\src\inputs\day{:02}", day);
+    const YEAR_ROOT: &str = env!("CARGO_MANIFEST_DIR");
+    let file_path = format!(r"{}\src\inputs\day{:02}", YEAR_ROOT, day);
 
-    let result = std::fs::read_to_string(filename);
+    let result = std::fs::read_to_string(&file_path);
 
     match result {
         Ok(content) => return content,
-        Err(_) => panic!("Failed to read input with day:{}", day),
+        Err(_) => panic!("Failed to read input file '{}' for day:{}", file_path, day),
     }
 }
 
