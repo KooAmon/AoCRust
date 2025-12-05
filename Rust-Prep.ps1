@@ -144,6 +144,20 @@ function New-DayInput {
     Write-Host " - Done"
 }
 
+function Test-Utils {
+    param (
+        [parameter(Mandatory)][int] $year
+    )
+
+    #   Copy utility file from template if diff with year's utility file
+    $utilTemplatePath = Join-Path $templatePath "src\utils.rs"
+    $utilYearPath = Join-Path $yearPath "src\utils.rs"
+    if ((Compare-Object (Get-Content -Path $utilTemplatePath) (Get-Content -Path $utilYearPath)).count -eq 0) { return }
+
+    Write-Host "Utility file: Updating $utilYearPath" -NoNewline
+    Copy-Item -Path $utilTemplatePath -Destination $utilYearPath -Force
+}
+
 Test-Params -day $day -year $year
 
 $templatePath = Join-Path $PSScriptRoot 'template'
@@ -163,3 +177,5 @@ if (!(Test-Path $dayPath)) { New-Day -day $day }
 else                       { Write-Host "Day $day file: Already exists at $dayPath" }
 if (!(Test-Path $dayInputPath)) { New-DayInput -day $day -year $year }
 else                            { Write-Host "Day $day input: Already exists at $dayInputPath" }
+
+Test-Utils -year $year
