@@ -1,3 +1,4 @@
+use std::{fmt::Display, time::{Duration, Instant}};
 use clap::Parser;
 
 /// Advent of Code 2015 Solutions
@@ -55,13 +56,38 @@ pub trait AoCDay {
 
     fn run(&self) {
         if self.should_run_part1() {
+            let started = Instant::now();
             let part1 = self.part1();
-            println!("Day{:02} Part 1: {}", part1.0, part1.1);
+            let elapsed = started.elapsed();
+            println!("Day{:02} Part 1: {} ({})", part1.0, part1.1, PrettyDuration(elapsed));
         }
 
         if self.should_run_part2() {
+            let started = Instant::now();
             let part2 = self.part2();
-            println!("Day{:02} Part 2: {}", part2.0, part2.1);
+            let elapsed = started.elapsed();
+            println!("Day{:02} Part 2: {} ({})", part2.0, part2.1, PrettyDuration(elapsed));
         }
+    }
+}
+
+/// Local wrapper for pretty-printing durations.
+pub struct PrettyDuration(pub Duration);
+
+impl Display for PrettyDuration {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let nanos = self.0.as_nanos();
+        let (value, unit) = if nanos >= 1_000_000_000  { (nanos as f64 / 1_000_000_000.0, "s") }
+                                       else if nanos >= 1_000_000 { (nanos as f64 / 1_000_000.0, "ms") }
+                                       else if nanos >= 1_000     { (nanos as f64 / 1_000.0, "µs") }
+                                       else                       { (nanos as f64, "ns") };
+
+        let mut s = format!("{:.2}", value);
+        if s.contains('.') {
+            while s.ends_with('0') { s.pop(); }
+            if s.ends_with('.') { s.pop(); }
+        }
+
+        write!(f, "{}{}", s, unit)
     }
 }

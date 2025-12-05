@@ -4,6 +4,31 @@
 
 When using this codebase, you can run individual days of the Advent of Code challenges implemented in Rust. Each day is organized into its own module, and you can easily add more days or create a new Year.
 
+## Output
+
+The output of running the program will display the results for each day and part, along with the time taken to compute each part. Here's an example output:
+
+```
+Running day01
+Day01 Part 1: 1195 (1.77ms)
+Day01 Part 2: 6770 (1.72ms)
+Running day02
+Day02 Part 1: 28146997880 (8.28s)
+Day02 Part 2: 40028128307 (8.39s)
+Running day03
+Day03 Part 1: 167549941654721 (2.68ms)
+Day03 Part 2: 167549941654721 (2.73ms)
+Running day04
+Day04 Part 1: 1397 (218.69ms)
+Day04 Part 2: 8758 (8.82s)
+Running day05
+Day05 Part 1: 525 (6.32ms)
+Day05 Part 2: 333892124923577 (370µs)
+```
+
+> [NOTE!]
+> The duration displayed for each part may not be accurate when used with *--concurrent* parameter.
+
 ## Config
 Invoke-WebRequest needs a session cookie to successfully authenticate and pull input from AoC. Log into AoC from your browser, open DevTools (F12), go to the network tab and refresh the page. Under the request headers for the current year, look for "session=..." Copy the string after "=" into session.txt then run Rust-Prep.ps1 as shown below.
 
@@ -51,6 +76,9 @@ To run a specific year concurrently, you can use the `--concurrent` flag when ex
 # This will run all days of the year concurrently.
 cargo run -- --concurrent
 ```
+
+>[NOTE!]
+> Running concurrently will lead to interleaved output in the console, making it harder to read.
 
 ### How to Run a Specific Day
 
